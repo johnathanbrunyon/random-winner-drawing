@@ -6,11 +6,13 @@ import json
 
 # initialize ticketDict
 ticketDict = {}
+loadDict = {}
 
-# Load the initial data from json
+# Load the previously saved data from json
 try:
     with open('ticket_list.json', 'r') as f:
-        ticketDict = json.load(f)
+        loadDict = json.load(f)
+        ticketDict = loadDict
         print("Data Loaded")
         print(ticketDict)
 except:
@@ -29,6 +31,13 @@ def CheckValidInt(question):
             print("Please enter an integer")
             userInput = input(question)
     return convert
+
+def get_value(val):
+    for key in ticketDict.keys():
+         if val == key:
+              return "Ticket #" + key + " has " + ticketDict[key] + " entries"
+ 
+    return "Ticket doesn't exist"
 
 # Menu and option loop
 iterator = 0
@@ -52,7 +61,7 @@ while iterator < 1:
             ticketDict.update({ticket: 1})
             print("Ticket #" + str(ticket) + " has been added!")
     elif answer == 2:
-        # Add entires for specified toicket to dictionary 
+        # Add entires for specified ticket to dictionary 
         ticket = CheckValidInt("Enter the ticket number: ")
         answer = CheckValidInt("How many entires would you like to add? ")
         if ticket in ticketDict:
@@ -63,10 +72,11 @@ while iterator < 1:
     elif answer == 3:
         # Check how many entires a specific ticket has
         ticket = CheckValidInt("Enter the ticket number: ")
-        if ticket in ticketDict:
-            print(str(ticket) + " has " + str(ticketDict[ticket]) + " entries")
-        else:
-            print("Ticket does not exist.")
+        print(get_value(ticket))
+        # if ticket in ticketDict:
+        #     print(str(ticket) + " has " + str(ticketDict[ticket]) + " entries")
+        # #else:
+        #     #print("Ticket does not exist.")
     elif answer == 4:
         # Initialize ticket list for drawing
         ticketList = []
@@ -77,8 +87,8 @@ while iterator < 1:
                 ticketList.append(key)
                 iter += 1
             # Draws the winner
-            randomInt = rand.randint(0, len(ticketList) - 1)
-            print(str(ticketList[randomInt]) + " is a winning ticket!")
+        randomInt = rand.randint(0, len(ticketList) - 1)
+        print(str(ticketList[randomInt]) + " is a winning ticket!")
     elif answer == 5:
         # Saves the data when closing the program
         with open('ticket_list.json', 'w') as f:
